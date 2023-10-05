@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Forest-Fingers/static/css/main.fbb91458.css",
-    "main.js": "/Forest-Fingers/static/js/main.eed78ad9.js",
+    "main.js": "/Forest-Fingers/static/js/main.4707498b.js",
     "static/js/787.a1a5b88d.chunk.js": "/Forest-Fingers/static/js/787.a1a5b88d.chunk.js",
     "static/media/bg.jpg": "/Forest-Fingers/static/media/bg.c1f2e3bb7cd943e6e4e0.jpg",
     "static/media/trees_4.svg": "/Forest-Fingers/static/media/trees_4.592ecf868004f2e588a2e4428ae1d4f6.svg",
@@ -11,11 +11,11 @@
     "static/media/birds_1.svg": "/Forest-Fingers/static/media/birds_1.4b403e0901f05c33decc942bd7872637.svg",
     "index.html": "/Forest-Fingers/index.html",
     "main.fbb91458.css.map": "/Forest-Fingers/static/css/main.fbb91458.css.map",
-    "main.eed78ad9.js.map": "/Forest-Fingers/static/js/main.eed78ad9.js.map",
+    "main.4707498b.js.map": "/Forest-Fingers/static/js/main.4707498b.js.map",
     "787.a1a5b88d.chunk.js.map": "/Forest-Fingers/static/js/787.a1a5b88d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.fbb91458.css",
-    "static/js/main.eed78ad9.js"
+    "static/js/main.4707498b.js"
   ]
 }
