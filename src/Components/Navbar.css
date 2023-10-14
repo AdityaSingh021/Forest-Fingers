@@ -3,16 +3,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-family: 'Martian Mono', monospace;
 }
 .navbar-items{
     margin-top: 20px;
     display: flex;
     cursor: pointer;
 }
+.fiv{
+    align-self: center;
+    word-spacing: -5px;
+    letter-spacing: -1px;
+}
 .logo{
+    align-self: flex-end;
     padding-right: 10px;
 }
 .name{
+    font-size: 1.5rem;
     text-decoration: none;
     color: grey;
     margin-top: 20px;
@@ -35,4 +43,20 @@
 .contri{
     cursor: pointer;
     margin-left: 10px;
+}
+.logo-image{
+    height: 40px;
+    width: 40px;
+}
+@media (max-width:744px){
+    .name{
+        font-size: 1rem;
+    }
+    .navi{
+        font-size: 0rem;
+    }
+    .logo-image{
+        height: 30px;
+        width: 30px;
+    }
 }

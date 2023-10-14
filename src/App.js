@@ -21,7 +21,7 @@ function App() {
       <img className="tree-1" src={tree_1} alt="" />
       <img className="tree-1" src={tree_2} alt="" />
       <img className="birds" src={birds} alt="" />
-      <Router basename='/Forest-Fingers'>
+      <Router>
         <Routes>
         <Route path="/Forest-Fingers" element={<TypeContainer />} />
         <Route path="/" element={<TypeContainer />} />

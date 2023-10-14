@@ -31,6 +31,8 @@ function Info() {
                     <h3>Educational:</h3> <p>Forest Fingers is a valuable resource for students and educators. Enhance your typing abilities for school assignments and academic success.</p>
 
                     <h3>Fun and Interactive:</h3> <p>Our platform turns typing practice into an enjoyable experience, helping you stay motivated to achieve your goals.</p>
+
+                    <h1 className='last' style={{textAlign:'center',marginTop:'100px'}}>Keep those fingers flying!</h1>
         </p>
     </div>
   )

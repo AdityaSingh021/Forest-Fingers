@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState ,useRef} from 'react'
 import './type_container.css';
 import Chart from "react-apexcharts";
 import Lottie from 'lottie-react';
-import reset from './images/Reset.json';
+import reset from './images/reset.png';
 function TypeContainer() {
   const [randomText, setRandomText] = useState("");
   const [accuracy,setAccuracy]=useState(0);
@@ -20,7 +20,11 @@ function TypeContainer() {
   var check=true;
   function generate(){
     var text="";
-    for(let i=0;i<70;i++){
+    var target=70;
+    if(window.innerWidth<700){
+      target=15;
+    }
+    for(let i=0;i<target;i++){
       const randomIndex = Math.floor(Math.random() * 1000);
       if(i==0){
         text=text+words[randomIndex];
@@ -84,6 +88,10 @@ function TypeContainer() {
     var chart=document.getElementsByClassName('chart');
     var stats=document.getElementsByClassName('stats');
     var time=document.getElementsByClassName('time');
+    var setTime=document.getElementsByClassName('rectangle');
+    var loop=document.getElementsByClassName('loop');
+    loop[0].style.width='50%';
+    setTime[0].style.display='none';
     time[0].style.display="none";
     chart[0].style.display="flex";
     stats[0].style.display="flex";
@@ -95,6 +103,114 @@ function TypeContainer() {
   const [lastAcc,setLastAcc]=useState(0);
   const [currWordLength,setCurrentWordLength]=useState(0);
 
+  const [lastInputLength,setLastInputLength]=useState(0);
+
+  const handleInputChange = (event) => {
+    // Capture specific key presses, such as "Enter"
+    // if (event.key === "p") {
+    // }
+    
+    if (event.key === "Backspace") {alert("abcd");}
+    const inputValue = event.target.value;
+    const lastChar = inputValue.charAt(inputValue.length - 1);
+    // alert(lastChar);
+    // alert(inputValue.length+"  "+lastInputLength);
+
+    var flag=true;
+    if (runningState && randomText.length>0) {
+      setCurrentLength(currLenght+1);
+      setFinalTIme(finalTime);
+      if(startTimer){const timer = setTimeout(callback, finalTime*1000);
+        setTimerWidth(finalTime);
+        setTimerId(timer);
+        setIsActive(true);
+        setStartTimer(false);
+        var chart=document.getElementsByClassName('chart');
+        var stats=document.getElementsByClassName('stats');
+        var timeProgress=document.getElementsByClassName('current-time');
+        var finalTimee=document.getElementsByClassName('final-time');
+        finalTimee[0].style.width="100%";
+        timeProgress[0].style.width="100%";
+        chart[0].style.display="none";
+        stats[0].style.display="none";
+
+      }
+      if(lastChar === 'Backspace' || lastInputLength>inputValue.length){
+        // alert(inputValue.length+"  "+lastInputLength);
+        setCharIndex(charIndex-1);
+        setLastInputLength(inputValue.length);
+        // alert("back");
+        flag=false;
+      }
+      if (lastChar === " ") {
+      if(lastAcc!=0 && currWordLength!=0 && (lastAcc/currWordLength)*100>=90){setWpm(wpm+1);}
+        console.log(wpm);
+        setCurrentWordLength(0);
+        setLastAcc(0);
+        setLastInputLength(inputValue.length);
+      }else{
+        setCurrentWordLength(currWordLength+1);
+      }
+      if(lastChar==randomText.charAt(charIndex)){
+        setLastAcc(lastAcc+1);
+        const nextCharIndex = charIndex + 1;
+        setAccuracy(accuracy+1);
+        setCharIndex(nextCharIndex);
+        setLastInputLength(inputValue.length);
+      }
+      else{
+        if(flag){
+          setWrongIndexes([...wrongIndexes, charIndex]);
+          setCharIndex(charIndex+1);
+          setLastInputLength(lastInputLength+1);
+        }else{
+          // if(wrongIndexes.includes(charIndex)){
+            wrongIndexes.pop();
+            setWrongIndexes(wrongIndexes);
+            setCharIndex(charIndex-1);
+          // }
+        }
+      }
+      if(charIndex==randomText.length-1){
+        generate();
+        setCharIndex(0);
+        setWrongIndexes([]);
+        console.log("last index");
+      }
+    }else{
+      setRunningState(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   window.addEventListener("keydown", handleKeyPress);
+
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyPress);
+  //   };
+  // }, []);
+
+
+  // useEffect(() => {
+  //   const handleKeyDown = (event) => {
+  //     if (event.key === "Backspace") {
+  //       setCharIndex(charIndex-1);
+  //       setIsBackPressed(true);
+  //     }
+  //   };
+  //   document.addEventListener("keydown", handleKeyDown);
+  //   return () => {
+  //     document.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, []);
+
+  useEffect(()=>{
+    if(wrongIndexes.includes(charIndex)){
+      wrongIndexes.pop();
+      setWrongIndexes(wrongIndexes);
+      setCharIndex(charIndex);
+    }
+  },[charIndex,wrongIndexes]);
 
   useEffect(() => {
     const handleKeyPress = (event) => {
@@ -157,6 +273,14 @@ function TypeContainer() {
     };
   }, [finalTime,charIndex, randomText,wpm,accuracy]);
 
+  const inputRef = useRef(null);
+
+  const handleDivClick = () => {
+    // Programmatically set focus to the input field
+    if (inputRef.current && window.innerWidth<700) {
+      inputRef.current.focus();
+    }
+  };
 
   const resetData=()=>{
     setAccuracy(0);
@@ -173,6 +297,10 @@ function TypeContainer() {
     var time=document.getElementsByClassName('time');
     var timeProgress=document.getElementsByClassName('current-time');
     var finalTime=document.getElementsByClassName('final-time');
+    var setTime=document.getElementsByClassName('rectangle');
+    var loop=document.getElementsByClassName('loop');
+    loop[0].style.width='auto';
+    if(window.innerWidth>700) setTime[0].style.display='flex';
     finalTime[0].style.width="0%";
     timeProgress[0].style.width="0%";
     time[0].style.display="inline";
@@ -254,6 +382,9 @@ function TypeContainer() {
   };
 
   useEffect(()=>{
+    const fifteen0 = document.getElementById('fifteen0');
+    const thirty0 = document.getElementById('thirty0');
+    const sixty0 = document.getElementById('sixty0');
     const fifteen = document.getElementById('fifteen');
     const thirty = document.getElementById('thirty');
     const sixty = document.getElementById('sixty');
@@ -264,6 +395,13 @@ function TypeContainer() {
       sixty.style.color='grey';
       fifteen.style.backgroundColor='#181D25';
       fifteen.style.color='grey';
+
+      thirty0.style.backgroundColor='#535353';
+      thirty0.style.color='#45FFCA';
+      sixty0.style.backgroundColor='#181D25';
+      sixty0.style.color='grey';
+      fifteen0.style.backgroundColor='#181D25';
+      fifteen0.style.color='grey';
     }else if(finalTime==60){
       sixty.style.backgroundColor='#535353';
       sixty.style.color='#45FFCA';
@@ -271,6 +409,13 @@ function TypeContainer() {
       thirty.style.color='grey';
       fifteen.style.backgroundColor='#181D25';
       fifteen.style.color='grey';
+
+      sixty0.style.backgroundColor='#535353';
+      sixty0.style.color='#45FFCA';
+      thirty0.style.backgroundColor='#181D25';
+      thirty0.style.color='grey';
+      fifteen0.style.backgroundColor='#181D25';
+      fifteen0.style.color='grey';
     }else{
       fifteen.style.backgroundColor='#535353';
       fifteen.style.color='#45FFCA';
@@ -278,6 +423,13 @@ function TypeContainer() {
       sixty.style.color='grey';
       thirty.style.backgroundColor='#181D25';
       thirty.style.color='grey';
+
+      fifteen0.style.backgroundColor='#535353';
+      fifteen0.style.color='#45FFCA';
+      sixty0.style.backgroundColor='#181D25';
+      sixty0.style.color='grey';
+      thirty0.style.backgroundColor='#181D25';
+      thirty0.style.color='grey';
     }
   },[finalTime]);
 
@@ -293,9 +445,17 @@ function TypeContainer() {
   }
   return (
     <div className="main">
-      <div className='loop'><Lottie loop={false} animationData={reset} onClick={resetData}/></div>
+      <div className="rectangle-for-mobile">
+      <div className="set-time" style={{color:'grey',fontSize:'0.8rem'}}>Set time:</div> 
+        <div className="input-box">
+          <div id="fifteen0" onClick={()=>{if(!isActive){setFinalTIme(15)}}}>15s</div>
+          <div id="thirty0" onClick={()=>{if(!isActive){setFinalTIme(30)}}}>30s</div>
+          <div id="sixty0" onClick={()=>{if(!isActive){setFinalTIme(60)}}}>60s</div>
+        </div>
+      </div>
       <div className="reset">
         <div className="CurrentTime" style={{textStyle}}><span style={{fontSize:"1rem",color:'grey'}}>Time: </span>{currentTime}<span style={{fontSize:"1rem",color:'grey'}}>Sec</span> </div>
+          <div className="loop"><img className="reset-button" src={reset} alt="reset" onClick={resetData}/></div>
           <div className="rectangle">
           <div className="set-time" style={{color:'grey',fontSize:'0.8rem'}}>Set time:</div> 
             <div className="input-box">
@@ -305,7 +465,8 @@ function TypeContainer() {
             </div>
           </div>
         </div>
-        <p id='para'>
+        <form noValidate><input className="type-here" type="text" onChange={handleInputChange} spellcheck="false" ref={inputRef}/></form>
+        <p id='para' onClick={handleDivClick}>
         {randomText.split('').map((char, index) => (
           <span key={index} style={{ color: getColorForIndex(index), textDecoration:underline(getColorForIndex(index)),textUnderlineOffset:'5px'}}>
             {char}
@@ -334,8 +495,8 @@ function TypeContainer() {
               />
       </div>
       <div className="stats" style={{display:"none"}}>
-          <div className="wpm">{wpm*60/finalTime} <span style={{fontSize:"3rem"}}>WPM</span> </div>
-          <div className="acc">{Math.floor(accuracy/currLenght*100)}%<span style={{fontSize:"3rem"}}>Acc</span></div>
+          <div className="wpm">{wpm*60/finalTime} <div className="stats-item" >WPM</div> </div>
+          <div className="acc">{Math.floor(accuracy/currLenght*100)}%<div className="stats-item">Acc</div></div>
         </div>
     </div>
   );
